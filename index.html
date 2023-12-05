@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Kilos a libras</title>
+</head>
+<body>
+
+
+
+
+    
+    <div class="d-flex col-9 flex-column" style="margin: 50px; padding:50px; border: 1px solid transparent; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); border-radius:10px; background-color: #e9ecef;">
+        <span style="text-align: center; font-size:25px; margin-bottom:30px; font-weight:600;">Conversión de kilogramos a libras con IA</span>
+        <form action="" class="">
+            <div class="mb-3">
+                <label for="kilos" class="form-label" style="font-size: 18px;">Kilogramos: <span id="lbl-kilos" style="font-size: 18px;">0</span> </label>
+                <input type="range" class="form-range" min="0" max="200" id="kilos" oninput="conversor();" style="margin: 8px; padding:20px; border: 1px solid transparent; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); border-radius:10px; background-color: #fff;" >
+            </div>
+            <label for="kilos" class="form-label" id="resultados" style="font-size: 18px;">Resultado: 
+            </br>
+            <span id="resultado" style="font-size: 18px;">0</span>
+            </label>
+        </form>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.13.0/dist/tf.min.js"></script>
+    <script type="text/javascript">
+        var model=null;
+        (async () => {
+            console.log("Cargando modelo...");
+            model = await tf.loadLayersModel("model.json");
+            console.log("Modelo cargado con exito");
+        })();
+        console.log("mandando a llamar a la funcion");
+        function conversor(){
+            console.log("iniciando variable kilos y obtener su valor");
+            var kilos = document.getElementById("kilos").value;
+            console.log("");
+            document.getElementById("lbl-kilos").innerHTML=kilos;
+            console.log("entrar en el if");
+            if(model!=null){
+                console.log("variable tensor");
+                var tensor=tf.tensor1d([parseInt(kilos)]);
+                console.log("variable prediction");
+                var prediccion=model.predict(tensor).dataSync();
+                prediccion=Math.round(prediccion);
+                console.log("imprimir resultado en id resultado");
+                document.getElementById("resultado").innerHTML=
+                kilos+" kilogramos son "+prediccion+" libras";
+            }
+        }
+    </script> 
+   
+       
+</body>
+</html>
